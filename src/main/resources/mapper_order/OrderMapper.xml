@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.demo.order.order.mapper.OrderMapper">
+    <select id="findDayOrders" resultType="com.example.demo.order.order.model.DayOrder">
+      SELECT count(1) as orderCount, FROM_DAYS(TO_DAYS(create_time)) as dateDay FROM `ordertb` GROUP BY TO_DAYS(create_time);
+    </select>
+    <insert id="insertOrder" useGeneratedKeys="true" keyProperty="id" keyColumn="id" >
+        INSERT INTO ordertb ( table_sn,menuid,total_price,create_time,complete)
+        VALUES( #{order.tableSn},#{order.menuId},#{order.totalPrice},#{order.createTime},#{order.complete} )
+    </insert>
+    <select id="findMyOrder" resultType="com.example.demo.web.model.MyOrder">
+      select t3.name as name, t3.price as price, t3.image as image, t2.menu_num as menuNum
+        from ordertb t1,orderdetail t2, menu t3
+        where t1.complete='todocompleted'
+        and t1.table_sn = #{tableSn}
+        and t1.id = t2.order_id
+        and t2.menu_id = t3.id
+    </select>
+</mapper>

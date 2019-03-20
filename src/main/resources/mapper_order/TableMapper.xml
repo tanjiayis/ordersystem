@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.demo.order.table.mapper.TableMapper">
+    <select id="listTable" resultType="com.example.demo.order.table.pojo.DiningTable">
+        select * from diningtable where 1=1
+        <if test="tableSn != '' and tableSn != null">
+          and tablesn = #{tableSn}
+        </if>
+        <if test="num != '' and num != null">
+            and num = #{num}
+        </if>
+        <if test="state!=0">
+            and flag = 0
+        </if>
+        and deleted = 0
+    </select>
+</mapper>
