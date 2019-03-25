@@ -43,8 +43,11 @@ public class MenuService {
         return list;
     }
 
-    public List<MenuType> findAllType() {
-        return menuTypeMapper.selectAll();
+    public List<MenuType> findAllType(String name) {
+        Condition condition = new Condition(MenuType.class);
+        if (StringUtil.isNotEmpty(name)) condition.createCriteria().andLike("typeName", "%"+name+"%");
+        List<MenuType> list = menuTypeMapper.selectByExample(condition);
+        return list;
     }
 
     public PageInfo<Menu> findAllMenus(String name, int typeId, boolean state, int pageIndex, int pageSize) {

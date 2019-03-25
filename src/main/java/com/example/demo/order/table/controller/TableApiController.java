@@ -7,6 +7,8 @@ import com.example.demo.exception.IllegalArgumentException;
 import com.example.demo.order.table.dto.AddTableDto;
 import com.example.demo.order.table.service.TableService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.core.env.Environment;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,17 +25,20 @@ import java.net.UnknownHostException;
 public class TableApiController extends BaseApiController {
     @Autowired
     private TableService tableService;
+    @Autowired
+    Environment environment;
 //    添加餐桌
     @RequestMapping("/add")
     public CommonResult addTable(@Valid AddTableDto dto, BindingResult bindingResult){
         if (bindingResult.hasErrors()) throw new IllegalArgumentException(bindingResult);
         String host = "";
+        String port = environment.getProperty("local.server.port");
         try {
             host = Inet4Address.getLocalHost().getHostAddress();
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }
-        int result = tableService.addTable(host, dto.getTableSn(), dto.getNum());
+        int result = tableService.addTable(host, port, dto.getTableSn(), dto.getNum());
         return new CommonResult(result);
     }
     @RequestMapping("/delete")

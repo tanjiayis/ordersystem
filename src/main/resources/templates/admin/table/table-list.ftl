@@ -39,41 +39,43 @@
                             </button>
 
                             <div class="tableToolContainer" style="margin-bottom:15px; float: right">
+                            <@shiro.hasPermission name="table_man.add" >
                                 <a href="#" class="btn btn-primary" onclick="doAdd()">
                                     <i class="icon icon-plus"></i>添加
                                 </a>
+                            </@shiro.hasPermission>
                             </div>
                         </form>
                     </div>
                     <table id="" class="table table-bordered table-striped table-hover">
                         <thead>
                         <tr>
-                            <th class="tableCenter">
-                                <input type="checkbox" name="" value="">
-                            </th>
                             <th class="tableCenter">餐桌编号</th>
                             <th class="tableCenter">容纳人数</th>
                             <th class="tableCenter">是否有人</th>
                             <th class="tableCenter">二维码缩略图</th>
-                            <th class="tableCenter">操作</th>
+                            <th style="width: 250px;" class="tableCenter">操作</th>
                         </tr>
                         </thead>
                         <tbody>
                         <#list tables?if_exists as table>
                             <tr>
-                                <td class="tableCenter">
-                                    <input type="checkbox" value="${(table.id?c)}" name="checked">
-                                </td>
                                 <td class="tableCenter">${table.tableSn}</td>
                                 <td class="tableCenter">${table.num}</td>
                                 <td class="tableCenter"><#if table.flag!false>有人<#else >无人</#if></td>
-                                <td class="tableCenter"><#if table.code??><img style="width: 60px;height: 60px;" src="/images/${table.code}"><#else >暂无二维码</#if></td>
+                                <td class="tableCenter"><#if table.code??><img id="down_img_${(table.id?default(0)?c)}" style="width: 60px;height: 60px;" src="/images/${table.code}"><#else >暂无二维码</#if></td>
                                 <td class="tableCenter">
+                            <@shiro.hasPermission name="table_man.del" >
                                     <a href="javascript:void(0)"
                                        onclick="del(${table.id?default(0)?c})"
                                        class="btn btn-sm btn-danger">
                                         <i class="icon icon-remove"></i>删除
-                                    </a></td>
+                                    </a>
+                                </@shiro.hasPermission>
+                                    &nbsp;<a href="javascript:void(0)" class="btn btn-sm btn-primary" onclick="downloadCode(${table.id?default(0)?c})">
+                                        <i class="icon icon-download-alt"></i>查看二维码大图
+                                    </a>
+                            </td>
                             </tr>
                         </#list>
                         </tbody>
@@ -87,6 +89,17 @@
     </div>
 </div>
 <script>
+    function downloadCode(id) {
+        console.log(id);
+        var img = document.getElementById("down_img_"+id);
+        var url=img.src;
+        var name='show';
+        var iWidth=350;
+        var iHeight=350;
+        var iTop = (window.screen.availHeight - 30 - iHeight) / 2;
+        var iLeft = (window.screen.availWidth - 10 - iWidth) / 2;
+        window.open(url, name, 'height=' + iHeight + ',,innerHeight=' + iHeight + ',width=' + iWidth + ',innerWidth=' + iWidth + ',top=' + iTop + ',left=' + iLeft + ',status=no,toolbar=no,menubar=no,location=no,resizable=no,scrollbars=0,titlebar=no');
+    }
     function doAdd() {
         $("#add_table").modal("show");
     }

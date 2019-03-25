@@ -52,9 +52,11 @@
                                 <td class="tableCenter">${(remark.createTime?string("yyyy-MM-dd HH:mm:ss"))}</td>
                                 <td class="tableCenter">${(remark.content)!}</td>
                                 <td class="tableCenter">
+                            <@shiro.hasPermission name="remark_man.del" >
                                     <a href="javascript:void(0)" onclick="del(${remark.id?default(0)?c})"
                                        class="btn btn-sm btn-danger"><i class="icon icon-remove"></i>删除
                                     </a>
+                            </@shiro.hasPermission>
                                 </td>
                             </tr>
                         </#list>

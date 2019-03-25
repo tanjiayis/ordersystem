@@ -17,10 +17,10 @@
                 </div>
                 <div class="panel-body">
                     <div class="tableToolContainer" style="margin-bottom:15px">
-                        <form class="form-inline" action="/drug/drug/">
+                        <form class="form-inline" action="/menu/category/list">
                             <div class="form-group">
                                 <label class="exampleInputAccount4">&nbsp;&nbsp;名称：&nbsp;</label>
-                                <input type="text" class="form-control" name="name" value="">
+                                <input type="text" class="form-control" name="typeName" value="${(param.typeName)!}">
                             </div>
                             &nbsp;&nbsp;
                             <button class="btn btn-success" type="submit">
@@ -28,9 +28,11 @@
                             </button>
 
                             <div class="tableToolContainer" style="margin-bottom:15px; float: right">
+                            <@shiro.hasPermission name="menu_type.add" >
                                 <a href="#" class="btn btn-primary" onclick="doAdd()">
                                     <i class="icon icon-plus"></i>添加
                                 </a>
+                                </@shiro.hasPermission>
                             </div>
                         </form>
                     </div>
@@ -45,18 +47,24 @@
                         <tbody>
                         <#list types?if_exists as type>
                             <tr>
-                                <td class="tableCenter">
-                                    <input type="checkbox" value="1" name="">${(type.id?c)!}
-                                </td>
+                                <td class="tableCenter">${(type.id?c)!}</td>
                                 <td class="tableCenter">${(type.typeName)!}</td>
                                 <td class="tableCenter">
+                            <@shiro.hasPermission name="menu_type.update" >
                                     <a href="javascript:void(0)" onclick="doEdit(${type.id?default(0)?c})"
-                                       class="btn btn-sm btn-primary"><i class="fa fa-pencil-square-o"></i>&nbsp;编辑</a>
+                                       class="btn btn-sm btn-success"><i class="fa fa-pencil-square-o"></i>&nbsp;编辑
+                                    </a>
+                                </@shiro.hasPermission>
+                                <@shiro.hasPermission name="menu_type.del" >
                                     <a href="javascript:void(0)" onclick="del(${type.id?default(0)?c})"
                                        class="btn btn-sm btn-danger"><i class="icon icon-remove"></i>删除
                                     </a>
+                                </@shiro.hasPermission>
+                                    <@shiro.hasPermission name="menu_type.query" >
                                     <a href="/menu/type?id=${(type.id?c)!}"
-                                       class="btn btn-sm btn-success"><i class="fa fa-pencil-square-o"></i>&nbsp;查看分类下菜品</a>
+                                       class="btn btn-sm btn-info"><i class="fa fa-pencil-square-o"></i>&nbsp;查看分类下菜品
+                                    </a>
+                                    </@shiro.hasPermission>
                                 </td>
                             </tr>
                         </#list>

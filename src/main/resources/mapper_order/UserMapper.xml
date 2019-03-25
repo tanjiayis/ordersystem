@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.demo.order.user.mapper.UserMapper">
+    <select id="findUsers" resultType="com.example.demo.order.user.model.UserInfo">
+        select t1.*, t2.name as roleName  from user t1, role t2 where 1=1
+        <if test="roleId  > 0">
+          and t1.role_id = #{roleId}
+        </if>
+        <if test="realName != '' and realName != null">
+            and t1.real_name like '%#{realName}%'
+        </if>
+        and t1.role_id = t2.id
+    </select>
+</mapper>

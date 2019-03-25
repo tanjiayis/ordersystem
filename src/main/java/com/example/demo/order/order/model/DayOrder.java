@@ -1,5 +1,6 @@
 package com.example.demo.order.order.model;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -7,7 +8,8 @@ import java.util.Date;
  */
 public class DayOrder {
     private int orderCount;
-    private Date dateDay;
+    private String dateDay;
+    private BigDecimal totalPrice;
 
     public int getOrderCount() {
         return orderCount;
@@ -17,11 +19,19 @@ public class DayOrder {
         this.orderCount = orderCount;
     }
 
-    public Date getDateDay() {
+    public String getDateDay() {
         return dateDay;
     }
 
-    public void setDateDay(Date dateDay) {
+    public void setDateDay(String dateDay) {
         this.dateDay = dateDay;
+    }
+
+    public BigDecimal getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(BigDecimal totalPrice) {
+        this.totalPrice = totalPrice;
     }
 }

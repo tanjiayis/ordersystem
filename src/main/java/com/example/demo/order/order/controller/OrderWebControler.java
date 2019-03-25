@@ -38,18 +38,15 @@ public class OrderWebControler extends BaseController{
         model.addAttribute("count", list.getTotal());
         return "/admin/order/order-list";
     }
-    @RequestMapping("/report")
-    public String Report(ModelMap model){
-//        if (bindingResult.hasErrors()) throw new IllegalArgumentException(bindingResult);
-        List<DayOrder> list  = orderService.findDayOrdedr();
-        model.put("dayOrder", list);
-        return "/admin/order/order-report";
-    }
     @RequestMapping("/detail")
     public String detail(@Valid DetailDto dto,  ModelMap model, BindingResult bindingResult){
         if (bindingResult.hasErrors()) throw new IllegalArgumentException(bindingResult);
         OrderInfo  orderInfo =  orderService.orderDetail(dto.getId());
         model.put("orderInfo", orderInfo);
         return "/admin/order/order-detail";
+    }
+    @RequestMapping("/report")
+    public String Report(ModelMap model){
+        return "/admin/order/order-report";
     }
 }

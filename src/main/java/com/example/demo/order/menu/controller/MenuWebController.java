@@ -5,6 +5,7 @@ import com.example.demo.data.CommonPage;
 import com.example.demo.order.menu.dto.DetailDto;
 import com.example.demo.order.menu.dto.FilterMenuDto;
 import com.example.demo.exception.IllegalArgumentException;
+import com.example.demo.order.menu.dto.FilterTypeDto;
 import com.example.demo.order.menu.model.MenuTree;
 import com.example.demo.order.menu.pojo.Menu;
 import com.example.demo.order.menu.pojo.MenuType;
@@ -33,14 +34,15 @@ public class MenuWebController extends BaseController{
     public String listTreeMenu(ModelMap model){
         List<MenuTree> listTree = menuService.findAll();
         model.put("menus", listTree);
-        model.put("types", menuService.findAllType());
+        model.put("types", menuService.findAllType(""));
         model.put("count", listTree.size());
         return "/admin/menu-list";
     }
     @RequestMapping("/category/list")
-    public String categoryMenu(ModelMap model){
-        List<MenuType> list = menuService.findAllType();
+    public String categoryMenu(@Valid FilterTypeDto dto, ModelMap model){
+        List<MenuType> list = menuService.findAllType(dto.getTypeName());
         model.put("types", list);
+        model.put("param", dto.wrapAsMap());
         model.put("count", list.size());
         return "/admin/menu/menu-type";
     }
@@ -49,7 +51,7 @@ public class MenuWebController extends BaseController{
         if (bindingResult.hasErrors()) throw new IllegalArgumentException(bindingResult);
         PageInfo<Menu> list = menuService.findAllMenus(dto.getName(), dto.getType(), dto.isState(), page.getPageIndex(), page.getPageSize());
         model.put("menus", list.getList());
-        model.put("types", menuService.findAllType());
+        model.put("types", menuService.findAllType(""));
         model.put("param", dto.wrapAsMap());
         model.put("count", list.getTotal());
         model.put("page", new CommonPage(list));

@@ -1,6 +1,7 @@
 package com.example.demo.order.order.mapper;
 
 import com.example.demo.order.order.model.DayOrder;
+import com.example.demo.order.order.model.HotMenu;
 import com.example.demo.order.order.pojo.Order;
 import com.example.demo.web.model.MyOrder;
 import org.apache.ibatis.annotations.Options;
@@ -18,4 +19,6 @@ public interface OrderMapper extends Mapper<Order>{
     int insertOrder(@Param("order") Order order);
 
     List<MyOrder> findMyOrder(@Param("tableSn") String tableSn);
+
+    List<HotMenu> findHot(@Param("num") int num);
 }

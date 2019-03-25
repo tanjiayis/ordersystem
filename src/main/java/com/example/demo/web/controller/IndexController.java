@@ -2,7 +2,10 @@ package com.example.demo.web.controller;
 
 import com.example.demo.order.menu.service.MenuService;
 import com.example.demo.order.order.enums.OrderStateEnum;
+import com.example.demo.order.order.pojo.Order;
 import com.example.demo.order.order.service.OrderService;
+import com.example.demo.order.table.pojo.DiningTable;
+import com.example.demo.order.table.service.TableService;
 import com.example.demo.web.model.MyOrder;
 import com.example.demo.web.model.MyOrder2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +30,7 @@ public class IndexController {
     private OrderService orderService;
     @RequestMapping("/web")
     public String selectFoods(@RequestParam("tableSn") String tableSn, ModelMap model){
-        model.put("types", menuService.findAllType());
+        model.put("types", menuService.findAllType(""));
         model.put("typeAndMenus", menuService.findAll());
         model.put("tableSn", tableSn);
         return "/web/index";
@@ -35,9 +38,9 @@ public class IndexController {
     @RequestMapping("/web/my_order")
     public String myCurrentOrder(@RequestParam("tableSn") String tableSn, ModelMap model){
         List<MyOrder> list = orderService.findMyOrder(tableSn);
-        MyOrder2 myOrder2 = orderService.findMyOrder2(tableSn);
+        Order order= orderService.findMyOrder2(tableSn);
         model.put("order_menus", list);
-        model.put("myOrder2", myOrder2);
+        model.put("order", order);
         model.put("tableSn", tableSn);
 ;        return "/web/my-order";
     }

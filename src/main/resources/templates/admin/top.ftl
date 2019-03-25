@@ -78,6 +78,19 @@
         background-color: rgba(0, 0, 0, 0.2);
         color: #FFFFFF;
     }
+    .navbar-menu::before{
+        content: "你的角色是，${(role.name)!}";
+        display: inline-block;
+        color: #FFFFFF;
+        float: left;
+        margin-top: 8px;
+        font-family: ZenIcon;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 400;
+        font-variant: normal;
+        text-transform: none;
+    }
 </style>
 </head>
 <body>
@@ -88,7 +101,7 @@
             点餐后台管理系统
         </div>
         <div class="navbar-menu">
-            <ul class="navbar-menu-items">
+            <ul class="navbar-menu-items" style="float: left">
                 <li class="firstMenu">
                     <a href="#" class="menuButton" id="firstMenuButton">
                         <i class="icon icon-user"></i>

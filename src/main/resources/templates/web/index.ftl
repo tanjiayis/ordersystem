@@ -25,8 +25,16 @@
             text-align: center;
             width:30%;
             height: 40px;
-            background-color: #0ab036;
             line-height: 40px;
+        }
+        #typeList li{
+            list-style-type: none;
+        }
+        .menus{
+            float: left; margin-left: 20px;margin-top: 20px;text-align: center;overflow: hidden;
+        }
+        .menus img{
+            width: 100px;height: 100px;
         }
     </style>
 </head>
@@ -38,25 +46,25 @@
     </nav>
     <#--中部内容-->
     <div style="margin-top: 48px;">
-        <ul class="layui-nav layui-nav-tree" style="width: auto; height: 100%" lay-filter="test">
+        <ul style="width: auto; height: 100%" id="typeList">
         <#list typeAndMenus?if_exists as types>
-            <li class="layui-nav-item layui-nav-itemed">
+            <li class="nav-parent">
                 <a href="javascript:;">${types.typeName}</a>
-                <dl class="layui-nav-child">
+                <div>
                     <div style="overflow: hidden;">
                         <#if types.menus??>
                             <#list types.menus?if_exists as menus>
-                                <div style="float: left; margin-left: 20px;margin-top: 20px;text-align: center;overflow: hidden">
-                                    <div style="width: 100px;height: 100px;">
+                                <div class="menus">
+                                    <div>
                                         <#if menus.image??>
-                                            <img style="width: 100px;height: 100px;" src="/images/menus/${menus.image}">
+                                            <img src="/images/menus/${menus.image}">
                                         <#else >
-                                            <img style="width: 100px;height: 100px;" src="/images/menus/no.png">
+                                            <img  src="/images/menus/no.png">
                                         </#if>
                                     </div>
                                     <div style="padding: 0px;">
-                                        <div style="padding: 0px;"><span style="font-size: 20px;color: red;">${menus.price}&nbsp;元</span></div>
-                                        <div><input type="checkbox" name="menu" value="${menus.id?c}">${menus.name}</div>
+                                        <div style="padding: 0px;font-size: 20px;color: red;"><span id="menu_${menus.id?c}">${menus.price}</span>&nbsp;元</div>
+                                        <div><input class="type_menu"  type="checkbox" name="menu" value="${menus.id?c}">${menus.name}</div>
                                     </div>
                                 </div>
                             </#list>
@@ -64,7 +72,7 @@
                             <dd><a href="javascript:;">此类型没有菜品了</a></dd>
                         </#if>
                     </div>
-                </dl>
+                </div>
             </li>
         </#list>
         </ul>
@@ -73,12 +81,54 @@
     <#--底部-->
     <div class="footer affix dock-bottom">
         <input id="tableSn" type="hidden" value="${tableSn}">
-        <div class="price strong" href="/web?tableSn=${tableSn}" style="width: 70%;">
-            <sapn class="iconfont icon-gouwuche"><#--<span class="label badge red circle">2</span>--></sapn>
-            <span>￥23.3</span></div>
-        <div class="confirm" style="width: 30%;" id="ok">去下单</div>
+        <div id="footer_price" class="price strong" href="/web?tableSn=${tableSn}" style="width: 70%;">
+            <sapn class="iconfont icon-gouwuche"></sapn>
+            <span id="total_price"></span></div>
+        <div class="confirm"  id="ok">去下单</div>
     </div>
 <script>
+    var total_price = 0;
+    function sidebarSlide() {
+        var num0 = 0;
+        var id = document.getElementsByName("menu");
+        for (var i = 0; i<id.length; i++){
+            if (id[i].checked){
+                num0++;
+            }
+        }
+        if (num0 < 1){
+            $("#ok").removeClass("green");
+            $("#total_price").html("未选购菜品");
+        }
+        $(".type_menu").click(function () {
+            var value = $("#menu_"+$(this).val()).html();
+            if ($(this).is(":checked")){
+                total_price = Number(total_price)+Number(value);
+                $("#total_price").html(total_price.toFixed(2)+"元");
+                $("#ok").addClass("green");
+            }else{
+                var num = 0;
+                total_price = Number(total_price)-Number(value);
+                $("#total_price").html(total_price.toFixed(2)+"元");
+                var id = document.getElementsByName("menu");
+                for (var i = 0; i<id.length; i++){
+                    if (id[i].checked){
+                        num++;
+                    }
+                }
+                if (num < 1){
+                    $("#ok").removeClass("green");
+                    $("#total_price").html("未选购菜品");
+                }
+            }
+        });
+
+        $("#typeList li a").click(function () {
+            console.log(123445);
+            $(this).parent("li.nav-parent").find("div.menus").slideToggle(400);
+        });
+    };
+
     $("#ok").click(function () {
         var value = new Array;
         var tableSn = $("#tableSn").val();
@@ -102,6 +152,9 @@
                     }
                 }
         );
+    });
+    $(document).ready(function(){
+        sidebarSlide();
     });
 </script>
 </body>

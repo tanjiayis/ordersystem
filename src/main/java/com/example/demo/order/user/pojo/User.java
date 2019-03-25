@@ -1,10 +1,12 @@
-package com.example.demo.order.admin.pojo;
+package com.example.demo.order.user.pojo;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import com.example.demo.order.user.enums.GenderEnum;
+import org.apache.shiro.SecurityUtils;
+import org.springframework.stereotype.Controller;
+
+import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * Created by JIAYI_TAN on 2019/2/22.
@@ -12,6 +14,12 @@ import java.io.Serializable;
 @Table(name = "user")
 @Entity
 public class User implements Serializable{
+
+    public static User getUserInfo(){
+        User user  = (User) SecurityUtils.getSubject().getSession().getAttribute("user");
+        return user;
+    }
+
     @Id
     @Column(name = "id")
     private int id;
@@ -21,12 +29,31 @@ public class User implements Serializable{
     private String username;
     @Column(name = "password")
     private String password;
+    @Enumerated(EnumType.STRING)
     @Column(name = "gender")
-    private int gender;
+    private GenderEnum gender;
     @Column(name = "realname")
     private String realName;
     @Column(name = "mobile")
     private String mobile;
+    @Column(name = "create_time")
+    private Date createTime;
+    @Column(name = "update_time")
+    private Date updateTime;
+
+    public User() {
+    }
+
+    public User(int roleId, String username, String password, GenderEnum gender, String realName, String mobile, Date createTime, Date updateTime) {
+        this.roleId = roleId;
+        this.username = username;
+        this.password = password;
+        this.gender = gender;
+        this.realName = realName;
+        this.mobile = mobile;
+        this.createTime = createTime;
+        this.updateTime = updateTime;
+    }
 
     public int getId() {
         return id;
@@ -60,11 +87,11 @@ public class User implements Serializable{
         this.password = password;
     }
 
-    public int getGender() {
+    public GenderEnum getGender() {
         return gender;
     }
 
-    public void setGender(int gender) {
+    public void setGender(GenderEnum gender) {
         this.gender = gender;
     }
 
@@ -82,5 +109,21 @@ public class User implements Serializable{
 
     public void setMobile(String mobile) {
         this.mobile = mobile;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
     }
 }

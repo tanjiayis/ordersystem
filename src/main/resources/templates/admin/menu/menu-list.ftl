@@ -45,9 +45,11 @@
                             </button>
 
                             <div class="tableToolContainer" style="margin-bottom:15px; float: right">
+                            <@shiro.hasPermission name="menu_list.add" >
                                 <a href="#" class="btn btn-primary" onclick="doAdd()">
                                     <i class="icon icon-plus"></i>添加
                                 </a>
+                                </@shiro.hasPermission>
                             </div>
                         </form>
                     </div>
@@ -60,9 +62,9 @@
                             <th style="width:50px" class="tableCenter">#</th>
                             <th style="width:120px" class="tableCenter">名称</th>
                             <th style="width:100px" class="tableCenter">价格</th>
-                            <th style="width:200px" class="tableCenter">展示</th>
+                            <th style="width:150px" class="tableCenter">展示</th>
                             <th style="width:100px" class="tableCenter">是否还有</th>
-                            <th style="width:500px" class="tableCenter">备注</th>
+                            <th style="width:450px" class="tableCenter">备注</th>
                             <th class="tableCenter">操作</th>
                         </tr>
                         </thead>
@@ -76,16 +78,31 @@
                                 <td class="tableCenter">${menu.name}</td>
                                 <td class="tableCenter">￥:<span style="color: red;font-weight: bold">${menu.price}</span>&nbsp;元</td>
                                 <td class="tableCenter">
-                                    <#if menu.image??><img style="width: 60px;height: 60px;" src="/images/menus/${menu.image}"><#else >暂无图片</#if>
+                                    <#if menu.image??><img style="width: 60px;height: 60px;" src="/images/menus/${menu.image}" id="imageview"><#else >暂无图片</#if>
                                 </td>
                                 <td class="tableCenter"><#if menu.state!true>有<#else >无此菜品</#if></td>
                                 <td class="tableCenter">${(menu.remark)!}</td>
                                 <td class="tableCenter">
+                            <@shiro.hasPermission name="menu_list.update" >
                                     <a href="#" onclick="doEdit(${(menu.id?c)!})"
-                                       class="btn btn-sm btn-success"><i class="fa fa-pencil-square-o"></i>编辑</a>
+                                       class="btn btn-sm btn-success"><i class="fa fa-pencil-square-o"></i>编辑
+                                    </a>
+                                </@shiro.hasPermission>
+                            <@shiro.hasPermission name="menu_list.del" >
                                     <a href="javascript:void(0)" onclick="del(${menu.id?default(0)?c})"
                                        class="btn btn-sm btn-danger"><i class="icon icon-remove"></i>删除
-                                    </a></td>
+                                    </a>
+                            </@shiro.hasPermission>
+                                    <#--<@shiro.hasPermission name="menu_list.del" >-->
+                                    <#if menu.image ??>
+                                    <#else >
+                                        <label for="uploader" class="btn btn-sm btn-primary">
+                                            <i class="icon icon-plus"></i>上传图片
+                                        </label>
+                                    <input type="file" style="display: none" id="uploader">
+                                    </#if>
+                                    <#--</@shiro.hasPermission>-->
+                            </td>
                             </tr>
                         </#list>
                         </tbody>
@@ -99,6 +116,15 @@
     </div>
 </div>
 <script>
+    $("#uploader").change(function () {
+        var $file = $(this);
+        var objUrl = $file[0].files[0];
+        var windowURL = window.URL || window.webkitURL;
+        var dataURL;
+        dataURL = windowURL.createObjectURL(objUrl);
+        $("#imageview").attr("src",dataURL);
+//        $('#imageview').attr("style","display:inline");
+    })
     function doAdd() {
         $("#menu_id").val(0);
         $("#add_menu").modal("show");

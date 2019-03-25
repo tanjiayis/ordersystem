@@ -14,7 +14,7 @@
     <script type="text/javascript" src="/js/xadmin.js"></script>
 </head>
 <body>
-    <div class="login-logo"><h1>${title}</h1></div>
+    <div class="login-logo"><h1>点餐系统后台登录</h1></div>
     <div class="login-box">
         <form class="layui-form layui-form-pane" action="/admin/login" method="post">
               

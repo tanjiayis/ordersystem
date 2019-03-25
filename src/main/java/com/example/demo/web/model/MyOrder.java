@@ -8,10 +8,19 @@ import java.util.Date;
  * Created by JIAYI_TAN on 2019/3/19.
  */
 public class MyOrder implements Serializable{
+    private int menuId;
     private String name;
     private BigDecimal price;
     private String image;
     private int menuNum;
+
+    public int getMenuId() {
+        return menuId;
+    }
+
+    public void setMenuId(int menuId) {
+        this.menuId = menuId;
+    }
 
     public String getName() {
         return name;

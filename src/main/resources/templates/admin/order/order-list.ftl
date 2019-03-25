@@ -75,11 +75,16 @@
                                     </div>
                                 </td>
                                 <td class="tableCenter">
+                                    <@shiro.hasPermission name="order_man.del">
                                     <a href="javascript:void(0)" onclick="del(${order.id?default(0)?c})"
                                        class="btn btn-sm btn-danger"><i class="icon icon-remove"></i>删除
                                     </a>
+                                    </@shiro.hasPermission>
+                            <@shiro.hasPermission name="order_man.query">
                                     <a href="/admin/order/detail?id=${(order.id?c)!}"
-                                       class="btn btn-sm btn-success"><i class="fa fa-pencil-square-o"></i>&nbsp;详情</a>
+                                       class="btn btn-sm btn-info"><i class="fa fa-pencil-square-o"></i>&nbsp;详情
+                                    </a>
+                            </@shiro.hasPermission>
                                 </td>
                             </tr>
                         </#list>

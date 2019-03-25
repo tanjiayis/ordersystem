@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.demo.order.privilege.mapper.RoleMapper">
+    <delete id="deletePer">
+      DELETE FROM role_privilege_tb where role_id = #{roleId}
+    </delete>
+    <select id="findPer" resultType="com.example.demo.order.privilege.pojo.RolePrivilegeTb">
+      SELECT * from role_privilege_tb where role_id = #{roleId}
+    </select>
+</mapper>

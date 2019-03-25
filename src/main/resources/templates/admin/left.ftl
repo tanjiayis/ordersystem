@@ -82,33 +82,34 @@
 <body>
 <nav class="menu" data-toggle="menu">
     <ul class="nav nav-primary" id="menusList">
-        <#--<li id="primary-0" class="nav-parent active">-->
-            <#--<a href="javascript:void(0)"><i class="icon icon-user"></i><span> 权限管理 </span><i class="icon-chevron-right nav-parent-fold-icon"></i></a>-->
-            <#--<ul class="nav ulNav" style="display: block;">-->
-                <#--<li><a target="mainFrame" href="javascript:void(0)"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;分配权限</a></li>-->
-            <#--</ul>-->
-        <#--</li>-->
+        <li id="primary-0" class="nav-parent active">
+            <a href="javascript:void(0)"><i class="icon icon-user"></i><span> 权限管理 </span><i class="icon-chevron-right nav-parent-fold-icon"></i></a>
+            <ul class="nav ulNav" style="display: block;">
+                <li><a target="mainFrame" href="/privilege/roles"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;角色管理</a></li>
+                <li><a target="mainFrame" href="/privilege/users"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;用户管理</a></li>
+            </ul>
+        </li>
         <li id="primary-0" class="nav-parent active">
             <a href="javascript:void(0)"><i class="icon icon-user"></i><span> 餐桌管理 </span><i class="icon-chevron-right nav-parent-fold-icon"></i></a>
             <ul class="nav ulNav" style="display: block;">
                 <li><a target="mainFrame" href="/admin/table/list"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;餐桌列表</a></li>
             </ul>
         </li>
-        <li id="primary-0" class="nav-parent active">
+        <li id="primary-1" class="nav-parent active">
             <a href="javascript:void(0)"><i class="icon icon-user"></i><span> 菜品管理 </span><i class="icon-chevron-right nav-parent-fold-icon"></i></a>
             <ul class="nav ulNav" style="display: block;">
                 <li><a target="mainFrame" href="/menu/list"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;菜品列表</a></li>
                 <li><a target="mainFrame" href="/menu/category/list"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;菜品分类</a></li>
             </ul>
         </li>
-        <li id="primary-0" class="nav-parent active">
+        <li id="primary-2" class="nav-parent active">
             <a href="javascript:void(0)"><i class="icon icon-user"></i><span> 订单管理 </span><i class="icon-chevron-right nav-parent-fold-icon"></i></a>
             <ul class="nav ulNav" style="display: block;">
                 <li><a target="mainFrame" href="/admin/order/list"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;订单列表</a></li>
-                <#--<li><a target="mainFrame" href="/admin/order/report"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;订单报表</a></li>-->
+                <li><a target="mainFrame" href="/admin/order/report"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;订单报表</a></li>
             </ul>
         </li>
-        <li id="primary-0" class="nav-parent active">
+        <li id="primary-3" class="nav-parent active">
             <a href="javascript:void(0)"><i class="icon icon-user"></i><span> 评论管理 </span><i class="icon-chevron-right nav-parent-fold-icon"></i></a>
             <ul class="nav ulNav" style="display: block;">
                 <li><a target="mainFrame" href="/admin/remark/list"><i class="fa fa-circle-o"></i>&nbsp;&nbsp;评论列表</a></li>

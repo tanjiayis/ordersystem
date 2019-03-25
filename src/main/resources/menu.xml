@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menus>
+	<menu sort = "1000" icon = "icon-user" name = "权限管理"  url = "" >
+		<module code="pri_role" sort = "1" icon = "" name = "角色管理"  url = "/privilege/roles">
+			<permissions code="pri_role.add" sort = "1" icon = "" name = "添加"  url = ""/>
+			<permissions code="pri_role.del" sort = "1" icon = "" name = "删除"  url = ""/>
+			<permissions code="pri_role.update" sort = "1" icon = "" name = "授权"  url = ""/>
+		</module>
+		<module code="pri_user" sort = "4" icon = "" name = "用户管理"  url = "/privilege/users">
+			<permissions code="pri_user.add" sort = "1" icon = "" name = "添加"  url = ""/>
+			<permissions code="pri_user.del" sort = "1" icon = "" name = "删除"  url = ""/>
+			<permissions code="pri_user.update" sort = "1" icon = "" name = "修改"  url = ""/>
+			<permissions code="user_role.update" sort = "1" icon = "" name = "更新用户角色"  url = ""/>
+		</module>
+	</menu>
+	<menu sort = "1000" icon = "icon-user" name = "餐桌管理"  url = "" >
+		<module code="table_man" sort = "1" icon = "" name = "餐桌列表"  url = "/admin/table/list">
+			<permissions code="table_man.add" sort = "1" icon = "" name = "添加"  url = ""/>
+			<permissions code="table_man.del" sort = "1" icon = "" name = "删除"  url = ""/>
+		</module>
+	</menu>
+	<menu sort = "1000" icon = "icon-user" name = "菜品管理"  url = "" >
+		<module code="menu_list" sort = "1" icon = "" name = "菜品列表"  url = "/menu/list">
+			<permissions code="menu_list.add" sort = "1" icon = "" name = "添加"  url = ""/>
+			<permissions code="menu_list.del" sort = "1" icon = "" name = "删除"  url = ""/>
+			<permissions code="menu_list.update" sort = "1" icon = "" name = "授权"  url = ""/>
+		</module>
+		<module code="menu_type" sort = "4" icon = "" name = "菜品分类"  url = "/menu/category/list">
+			<permissions code="menu_type.add" sort = "1" icon = "" name = "添加"  url = ""/>
+			<permissions code="menu_type.del" sort = "1" icon = "" name = "删除"  url = ""/>
+			<permissions code="menu_type.update" sort = "1" icon = "" name = "修改"  url = ""/>
+			<permissions code="menu_type.query" sort = "1" icon = "" name = "查看分类商品"  url = ""/>
+		</module>
+	</menu>
+	<menu sort = "1000" icon = "icon-user" name = "订单管理"  url = "" >
+		<module code="order_man" sort = "1" icon = "" name = "订单列表"  url = "/admin/order/list">
+			<permissions code="order_man.update" sort = "1" icon = "" name = "修改"  url = ""/>
+			<permissions code="order_man.del" sort = "1" icon = "" name = "删除"  url = ""/>
+			<permissions code="order_man.query" sort = "1" icon = "" name = "查看订单详情"  url = ""/>
+		</module>
+		<module code="order_remark" sort = "1" icon = "" name = "订单报表"  url = "/admin/order/report">
+
+		</module>
+	</menu>
+	<menu sort = "1000" icon = "icon-user" name = "评论管理"  url = "" >
+		<module code="remark_man" sort = "1" icon = "" name = "评论列表"  url = "/admin/remark/list">
+			<permissions code="remark_man.del" sort = "1" icon = "" name = "删除"  url = ""/>
+		</module>
+	</menu>
+</menus>

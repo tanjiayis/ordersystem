@@ -3,6 +3,7 @@ package com.example.demo.order.order.pojo;
 import com.example.demo.order.order.enums.OrderStateEnum;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -11,7 +12,7 @@ import java.util.Date;
  */
 @Table(name = "ordertb")
 @Entity
-public class Order {
+public class Order  implements Serializable{
     @Id
     @Column(name = "id")
     private int id;
