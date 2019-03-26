@@ -2,6 +2,8 @@
 <#import "/common/macro_common.ftl" as common>
 <#import "/common/macro_operate.ftl" as operate>
 <@common.html title="菜品列表">
+<link href="/zui/lib/uploader/zui.uploader.min.css" rel="stylesheet">
+<script type="text/javascript" src="/zui/lib/uploader/zui.uploader.min.js"></script>
 <body>
 <div class="container-fluid">
     <div class="row">
@@ -78,7 +80,7 @@
                                 <td class="tableCenter">${menu.name}</td>
                                 <td class="tableCenter">￥:<span style="color: red;font-weight: bold">${menu.price}</span>&nbsp;元</td>
                                 <td class="tableCenter">
-                                    <#if menu.image??><img style="width: 60px;height: 60px;" src="/images/menus/${menu.image}" id="imageview"><#else >暂无图片</#if>
+                                    <#if menu.image??><img style="width: 60px;height: 60px;" src="/images/menus/${menu.image}" id="imageview_${(menu.id?default(0)?c)}"><#else >暂无图片</#if>
                                 </td>
                                 <td class="tableCenter"><#if menu.state!true>有<#else >无此菜品</#if></td>
                                 <td class="tableCenter">${(menu.remark)!}</td>
@@ -93,15 +95,6 @@
                                        class="btn btn-sm btn-danger"><i class="icon icon-remove"></i>删除
                                     </a>
                             </@shiro.hasPermission>
-                                    <#--<@shiro.hasPermission name="menu_list.del" >-->
-                                    <#if menu.image ??>
-                                    <#else >
-                                        <label for="uploader" class="btn btn-sm btn-primary">
-                                            <i class="icon icon-plus"></i>上传图片
-                                        </label>
-                                    <input type="file" style="display: none" id="uploader">
-                                    </#if>
-                                    <#--</@shiro.hasPermission>-->
                             </td>
                             </tr>
                         </#list>
@@ -116,78 +109,7 @@
     </div>
 </div>
 <script>
-    $("#uploader").change(function () {
-        var $file = $(this);
-        var objUrl = $file[0].files[0];
-        var windowURL = window.URL || window.webkitURL;
-        var dataURL;
-        dataURL = windowURL.createObjectURL(objUrl);
-        $("#imageview").attr("src",dataURL);
-//        $('#imageview').attr("style","display:inline");
-    })
-    function doAdd() {
-        $("#menu_id").val(0);
-        $("#add_menu").modal("show");
-    }
-    function doEdit(id) {
-        $.post(
-            "/api/admin/menu/detail?id="+id,
-                function (data) {
-                    if (data.code < 0){
-                        alertShow("warning", data.message, 2000);
-                    }else{
-                        var result = data.result;
-                        $("#menu_id").val(result.id);
-                        $("#type").val(result.typeId);
-                        $("#menu_name").val(result.name);
-                        $("#price").val(result.price);
-                        $("#remark").val(result.remark);
-                        $("#add_menu_header").text("编辑此菜");
-                        $("#add_menu").modal("show");
-                    }
-                }
-        );
-    }
-    function del(id) {
-        warningModal("确定删除吗?", function () {
-            $.post("/api/admin/menu/delete?id="+id,
-                    function (data) {
-                        if (data.code < 0){
-                            alertShow("warning", data.message, 2000);
-                        }else{
-                            alertShow("info", "删除成功!", 2000);
-                        }
-                    }
-            );
-        });
-    }
-    function onSave() {
-        var id = $("#menu_id").val();
-        var typeId = $("#type").val();
-        var name = $("#menu_name").val();
-        var price = $("#price").val();
-        var remark = $("#remark").val();
-        $.post(
-            id == 0 ?"/api/admin/menu/add" : "/api/admin/menu/edit",
-                {
-                    menuId:id,
-                    typeId: typeId,
-                    name: name,
-                    price: price,
-                    remark: remark
-                },
-                function (data) {
-                   if (data.code < 0){
-                        alertShow("danger", data.message, 2000);
-                   }else{
-                       alertShow("info", id==0?"新增成功":"编辑成功", 2000);
-                       setTimeout(function () {
-                           window.location.reload();
-                       }, 2000);
-                   }
-                }
-        );
-    }
+
 </script>
 </body>
     <@operate.modal "增加菜品" "add_menu" "onSave">
@@ -216,10 +138,119 @@
             </div>
         </div>
         <div class="form-group">
+            <label class="col-sm-3  control-label">上传图片:</label>
+            <div id="uploaderExample" class="uploader col-sm-3">
+                <div class="file-list" data-drag-placeholder="请拖拽文件到此处"></div>
+                <button type="button" class="btn btn-primary uploader-btn-browse"><i class="icon icon-cloud-upload"></i> 选择文件</button>
+            </div>
+                <label class="col-sm-2  control-label" id="img_0" >图片展示:</label>
+                <div class="col-sm-3" id="img_1">
+                    <img src="" style="width: 60px;height: 60px;" id="img_show">
+                    <span class="help-block"></span>
+                </div>
+        </div>
+        <div class="form-group">
             <label class="col-sm-3  control-label">菜品备注:</label>
             <div class="col-sm-8">
                 <textarea class="form-control" name="remark" id="remark" placeholder="菜品备注"></textarea>
             </div>
         </div>
     </@operate.modal>
+    <script>
+        var menuImageName = '';
+        $('#uploaderExample').uploader({
+            autoUpload: true,
+            url: '/api/admin/menu/uploader',
+            mime_types: [
+                {title: '图片', extensions: 'jpg,gif,png'}
+            ],
+            max_file_size: '2MB',
+            multi_selection: false,
+            file_data_name: 'file',
+            previewImageSize: {width: 80, height: 100},
+            deleteActionOnDone: function (file, doRemoveFile) {
+                return true;
+            }
+        }).uploader().on('onUploadFile', function(file, data) {
+            menuImageName = data.name;
+            $("#img_0").show();
+            $("#img_show").attr("src", "/images/menus/"+menuImageName);
+            $("#img_1").show();
+        });
+        function doAdd() {
+            $("#menu_id").val(0);
+            $("#img_0").hide();
+            $("#img_1").hide();
+            $("#add_menu_form")[0].reset();
+            $("#add_menu").modal("show");
+        }
+        function doEdit(id) {
+            $.post(
+                    "/api/admin/menu/detail?id="+id,
+                    function (data) {
+                        if (data.code < 0){
+                            alertShow("warning", data.message, 2000);
+                        }else{
+                            var result = data.result;
+                            $("#img_0").show();
+                            $("#img_1").show();
+                            $("#menu_id").val(result.id);
+                            $("#type").val(result.typeId);
+                            $("#menu_name").val(result.name);
+                            $("#price").val(result.price);
+                            $("#remark").val(result.remark);
+                            $("#add_menu_header").text("编辑此菜");
+                            if (result.image==null || result.image == ""){
+                                $("#img_show").attr("src", "/images/menus/no.png");
+                            }else{
+                                $("#img_show").attr("src", "/images/menus/"+result.image);
+                            }
+                            $("#add_menu").modal("show");
+                        }
+                    }
+            );
+        }
+        function del(id) {
+            warningModal("确定删除吗?", function () {
+                $.post("/api/admin/menu/delete?id="+id,
+                        function (data) {
+                            if (data.code < 0){
+                                alertShow("warning", data.message, 2000);
+                            }else{
+                                alertShow("info", "删除成功!", 2000);
+                            }
+                        }
+                );
+            });
+        }
+        function onSave() {
+            var id = $("#menu_id").val();
+            var typeId = $("#type").val();
+            var name = $("#menu_name").val();
+            var price = $("#price").val();
+            var remark = $("#remark").val();
+            var imageName = menuImageName;
+            $.post(
+                    id == 0 ?"/api/admin/menu/add" : "/api/admin/menu/edit",
+                    {
+                        menuId:id,
+                        typeId: typeId,
+                        name: name,
+                        price: price,
+                        remark: remark,
+                        imageName:imageName
+                    },
+                    function (data) {
+                        if (data.code < 0){
+                            alertShow("danger", data.message, 2000);
+                        }else{
+                            alertShow("info", id==0?"新增成功":"编辑成功", 2000);
+                            setTimeout(function () {
+                                window.location.reload();
+                            }, 2000);
+                        }
+                    }
+            );
+        }
+    </script>
 </@common.html>

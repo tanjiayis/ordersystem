@@ -61,8 +61,8 @@ public class MenuService {
         return new PageInfo<>(list);
     }
 
-    public void addMenu(int typeId, String name, BigDecimal price, String remark) {
-        Menu menu = new Menu(typeId, name, price, null, remark, true);
+    public void addMenu(int typeId, String name, BigDecimal price, String remark, String imageName) {
+        Menu menu = new Menu(typeId, name, price, imageName, remark, true);
         menuMapper.insert(menu);
     }
 
@@ -71,9 +71,10 @@ public class MenuService {
         return  menu;
     }
 
-    public void editMenu(int menuId, int typeId, String name, BigDecimal price, String remark) {
+    public void editMenu(int menuId, int typeId, String name, BigDecimal price, String remark, String imageName) {
         Menu menu = menuMapper.selectByPrimaryKey(menuId);
         if (menu == null) throw new BusinessException("不存在此菜品!");
+        menu.setImage(StringUtil.isEmpty(imageName)?menu.getImage():imageName);
         menu.setTypeId(typeId);
         menu.setName(name);
         menu.setPrice(price);

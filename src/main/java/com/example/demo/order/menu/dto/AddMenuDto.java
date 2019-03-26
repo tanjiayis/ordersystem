@@ -13,6 +13,7 @@ public class AddMenuDto extends BaseDto{
     private String name;
     private BigDecimal price;
     private String remark;
+    private String imageName;
 
     public int getMenuId() {
         return menuId;
@@ -52,5 +53,13 @@ public class AddMenuDto extends BaseDto{
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public String getImageName() {
+        return imageName;
+    }
+
+    public void setImageName(String imageName) {
+        this.imageName = imageName;
     }
 }
