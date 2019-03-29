@@ -9,29 +9,22 @@ import com.example.demo.order.order.model.DayOrder;
 import com.example.demo.order.order.model.HotMenu;
 import com.example.demo.order.order.model.Menus;
 import com.example.demo.order.order.model.OrderInfo;
-import com.example.demo.order.table.mapper.TableMapper;
 import com.example.demo.order.order.enums.OrderStateEnum;
 import com.example.demo.order.order.pojo.Order;
 import com.example.demo.order.order.pojo.OrderDetail;
-import com.example.demo.order.table.pojo.DiningTable;
 import com.example.demo.order.table.service.TableService;
-import com.example.demo.redis.RedisOperator;
 import com.example.demo.web.model.MyOrder;
-import com.example.demo.web.model.MyOrder2;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 import tk.mybatis.mapper.entity.Condition;
 import tk.mybatis.mapper.entity.Example;
 import tk.mybatis.mapper.util.StringUtil;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -48,8 +41,6 @@ public class OrderService {
     private OrderDetailMapper detailMapper;
     @Autowired
     private TableService tableService;
-    @Autowired
-    private RedisOperator redisOperator;
 
     /**
      * 顾客点餐以及加餐业务
@@ -72,13 +63,7 @@ public class OrderService {
             totalPrice = totalPrice.add(menuMapper.selectByPrimaryKey(id).getPrice());
         }
         int result = order == null?addOrderT(tableSn, menuIds,ids, totalPrice):updateOrderT(order, menuIds, totalPrice);
-        if (result > 0)  setSubMenuTime(result, menuIds);
         return result;
-    }
-
-    private void setSubMenuTime(int orderId, String menuIds ){
-        String key = String.valueOf(orderId);
-        redisOperator.set(key, menuIds, 5*60);
     }
     @Transactional
     private int addOrderT(String tableSn, String menuIds,List<Integer> ids, BigDecimal totalPrice){
@@ -207,8 +192,10 @@ public class OrderService {
      * @param orderId
      */
     public void deleteMenuByOrderId(int menuId, int orderId) {
-        String value = redisOperator.get(String.valueOf(orderId));
-        if (value == null) throw new BusinessException("超过退餐所限时间!");
+        Order order = orderMapper.selectByPrimaryKey(orderId);
+        Date date = new Date();
+        long time = (date.getTime()-order.getCreateTime().getTime())/(60*1000);//当前时间减去下订单的时间得到分钟数
+        if (time != 0 && time > 3) throw new BusinessException("超过退餐所限时间!");
         Condition condition = new Condition(OrderDetail.class);
         condition.createCriteria().andCondition("order_id=", orderId).andCondition("menu_id=", menuId);
         detailMapper.deleteByExample(condition);

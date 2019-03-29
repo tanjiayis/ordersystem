@@ -112,10 +112,10 @@
 		</dependency>
 <!--基础springboot中自身的tomcat  导war包的时候用-->
 		<!--<dependency>-->
-		<!--<groupId>org.springframework.boot</groupId>-->
-		<!--<artifactId>spring-boot-starter-tomcat</artifactId>-->
-		<!--<scope>provided</scope>-->
-	<!--</dependency>-->
+			<!--<groupId>org.springframework.boot</groupId>-->
+			<!--<artifactId>spring-boot-starter-tomcat</artifactId>-->
+			<!--<scope>provided</scope>-->
+		<!--</dependency>-->
 
 	</dependencies>
 

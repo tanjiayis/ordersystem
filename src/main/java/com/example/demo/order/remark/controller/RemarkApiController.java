@@ -22,7 +22,7 @@ import javax.validation.Valid;
 public class RemarkApiController extends BaseApiController {
     @Autowired
     private RemarkService remarkService;
-    @RequiresPermissions("remark.delete")
+    @RequiresPermissions("remark_man.del")
     @RequestMapping("/delete")
     public CommonResult delete(@Valid DeleteDto dto, BindingResult bindingResult){
         if (bindingResult.hasErrors()) throw new IllegalArgumentException(bindingResult);
